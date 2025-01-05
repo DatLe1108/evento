@@ -2,10 +2,16 @@ import { EventoEvent } from "@/lib/type";
 import EventCard from "./EventCard";
 
 type EventListProps = {
-  events: EventoEvent[];
+  city: string;
 };
 
-export default function EventList({ events }: EventListProps) {
+export default async function EventList({ city }: EventListProps) {
+  const response = await fetch(
+    `https://bytegrad.com/course-assets/projects/evento/api/events?city=${city}`
+  );
+
+  const events: EventoEvent[] = await response.json();
+
   return (
     <section className="max-w-[1110px] flex flex-wrap gap-10 justify-center px-[20px]">
       {events.map((event) => (

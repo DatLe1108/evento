@@ -11,15 +11,11 @@ type EventProps = {
 export default async function EventPage({ params }: EventProps) {
   const { slug } = params;
 
-  await sleep(2000);
-
   const response = await fetch(
     `https://bytegrad.com/course-assets/projects/evento/api/events/${slug}`
   );
 
   const event = await response.json();
-
-  console.info(event);
 
   return (
     <main>
