@@ -17,7 +17,7 @@ export const sleep = async (ms: number) => {
   });
 };
 
-export const getEvents = async (city: string) => {
+export const getEvents = async (city: string, page: number = 1) => {
   const events = await prisma.eventoEvent.findMany({
     where: {
       city: city === "all" ? undefined : capitalize(city),
@@ -25,13 +25,21 @@ export const getEvents = async (city: string) => {
     orderBy: {
       date: "asc",
     },
+    take: 6,
+    skip: (page - 1) * 6,
+  });
+
+  const totalCount = await prisma.eventoEvent.count({
+    where: {
+      city: city === "all" ? undefined : capitalize(city),
+    },
   });
 
   if (!events) {
     return notFound();
   }
 
-  return events;
+  return { events, totalCount };
 };
 
 export const getEvent = async (slug: string) => {
