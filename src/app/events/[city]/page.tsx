@@ -1,16 +1,26 @@
 import EventList from "@/components/EventList";
 import H1 from "@/components/H1";
+import type { Metadata } from "next";
 
 import { Suspense } from "react";
 import Loading from "./loading";
+import { capitalize } from "@/lib/utils";
 
-type EventsProps = {
+type Props = {
   params: {
     city: string;
   };
 };
 
-export default async function Events({ params }: EventsProps) {
+export function generateMetadata({ params }: Props): Metadata {
+  const { city } = params;
+
+  return {
+    title: city === "all" ? "All Events" : `Events in ${capitalize(city)}`,
+  };
+}
+
+export default async function Events({ params }: Props) {
   const { city } = params;
 
   return (
